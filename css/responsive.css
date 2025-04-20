@@ -23,9 +23,13 @@ Version:	1.1
 	font-size: 13px;
 }
 .btn {
-	padding: 11px 20px;
-	font-weight: 400;
-	font-size: 13px;
+	background: #8F9779;
+	color: #8F9779;
+	padding: 10px 25px;
+	font-size: 14px;
+}
+.btn:hover {
+	background: #7a8268;
 }
 .breadcrumbs {
 	padding: 60px 0;
@@ -63,6 +67,12 @@ Version:	1.1
 	margin-top: 12px;
 	display: none;
 	margin: 0;
+}
+.header .header-inner .get-quote .btn {
+	background: #8F9779;
+}
+.header .header-inner .get-quote .btn:hover {
+	background: #7a8268;
 }
 .header .nav li a {
 	font-size: 13px;
@@ -452,14 +462,14 @@ Version:	1.1
 	margin:0;
 }
 .slicknav_nav li:hover a{
-	color:#1A76D1;
+	color:#8F9779;
 }
 .slicknav_nav li .dropdown li a{
 	color:#2C2D3F;
 	background:transparent;
 }
 .slicknav_nav li .dropdown li a:hover{
-	color:#1A76D1;
+	color:#8F9779;
 }
 .slicknav_nav li .slicknav_item{
 	background:transparent;
@@ -471,7 +481,7 @@ Version:	1.1
 	font-weight:400;
 }
 .slicknav_menu .slicknav_icon-bar {
-	background-color: #1A76D1;
+	background-color: #8F9779;
 	box-shadow: none;
 	text-shadow: none;
 }
@@ -479,7 +489,7 @@ Version:	1.1
 	color:#2C2D3F;
 }
 .slicknav_nav li:hover .slicknav_arrow{
-	color:#1A76D1;
+	color:#8F9779;
 }
 .slicknav_menu .slicknav_icon-bar {
 	display: block;
@@ -840,11 +850,10 @@ Version:	1.1
 	margin: 0;
 }
 .newsletter .btn {
-	height: 50px;
-	line-height: 50px;
-	width: 100%;
-	margin: 0;
-	margin-top: 14px;
+	background: #8F9779;
+}
+.newsletter .btn:hover {
+	background: #7a8268;
 }
 .error-page .error-inner h1 {
 	font-size: 80px;

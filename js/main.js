@@ -329,3 +329,43 @@ Version:	1.1
 	
 	
 })(jQuery);
+
+// Testimonial Slider
+$(document).ready(function() {
+    let currentTestimonial = 0;
+    const testimonials = $('.single-testimonial');
+    const totalTestimonials = testimonials.length;
+    
+    // Show first testimonial
+    $(testimonials[0]).addClass('active');
+    
+    // Create navigation dots
+    const dotsContainer = $('<div class="testimonial-dots"></div>');
+    for (let i = 0; i < totalTestimonials; i++) {
+        dotsContainer.append('<span class="testimonial-dot" data-index="' + i + '"></span>');
+    }
+    $('.testimonial-slider').append(dotsContainer);
+    
+    // Set first dot as active
+    $('.testimonial-dot').first().addClass('active');
+    
+    // Function to show testimonial
+    function showTestimonial(index) {
+        testimonials.removeClass('active');
+        $(testimonials[index]).addClass('active');
+        $('.testimonial-dot').removeClass('active');
+        $('.testimonial-dot[data-index="' + index + '"]').addClass('active');
+    }
+    
+    // Auto rotate testimonials
+    setInterval(function() {
+        currentTestimonial = (currentTestimonial + 1) % totalTestimonials;
+        showTestimonial(currentTestimonial);
+    }, 5000);
+    
+    // Click handler for dots
+    $('.testimonial-dot').click(function() {
+        currentTestimonial = $(this).data('index');
+        showTestimonial(currentTestimonial);
+    });
+});

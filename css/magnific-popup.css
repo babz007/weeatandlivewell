@@ -137,14 +137,16 @@ button::-moz-focus-inner {
   font-style: normal;
   font-size: 28px;
   font-family: Arial, Baskerville, monospace; }
-  .mfp-close:hover,
+  .mfp-close:hover {
+    color: #8F9779; }
   .mfp-close:focus {
     opacity: 1; }
   .mfp-close:active {
+    color: #8F9779;
     top: 1px; }
 
 .mfp-close-btn-in .mfp-close {
-  color: #333; }
+  color: #8F9779; }
 
 .mfp-image-holder .mfp-close,
 .mfp-iframe-holder .mfp-close {

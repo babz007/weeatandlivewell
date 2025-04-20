@@ -1,7 +1,6 @@
-
 .nice-select {
     -webkit-tap-highlight-color: transparent;
-    background-color: #fff;
+    background-color: #8F9779;
     border-radius: 5px;
     border: solid 1px #e8e8e8;
     box-sizing: border-box;
@@ -31,7 +30,7 @@
 }
 
 .nice-select:hover {
-    border-color: #3164F4;
+    border-color: #8F9779;
 }
 
 .nice-select:active,
@@ -121,7 +120,7 @@
 }
 
 .nice-select .list {
-    background-color: #fff;
+    background-color: #8F9779;
     border-radius: 5px;
     box-shadow: 0 0 0 1px rgba(68, 68, 68, 0.11);
     box-sizing: border-box;
@@ -163,7 +162,7 @@
 }
 
 .nice-select .option:hover {
-    background-color: #238AC1;
+    background-color: #8F9779;
     color: #fff;
 }
 
@@ -186,6 +185,6 @@
 }
 
 .contact-form-wrapper .list {
-    background: #2f3341 none repeat scroll 0 0;
+    background: #8F9779 none repeat scroll 0 0;
     border-radius: 0;
 }

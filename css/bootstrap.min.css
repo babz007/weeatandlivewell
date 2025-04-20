@@ -6,7 +6,7 @@
  */
 
 :root {
-    --blue: #007bff;
+    --blue: #8F9779;
     --indigo: #6610f2;
     --purple: #6f42c1;
     --pink: #e83e8c;
@@ -19,7 +19,7 @@
     --white: #fff;
     --gray: #868e96;
     --gray-dark: #343a40;
-    --primary: #007bff;
+    --primary: #8F9779;
     --secondary: #868e96;
     --success: #28a745;
     --info: #17a2b8;
@@ -235,14 +235,14 @@ sup {
 }
 
 a {
-    color: #007bff;
+    color: #8F9779;
     text-decoration: none;
     background-color: transparent;
     -webkit-text-decoration-skip: objects
 }
 
 a:hover {
-    color: #0056b3;
+    color: #8F9779;
     text-decoration: underline
 }
 
@@ -2433,14 +2433,14 @@ fieldset[disabled] a.btn {
 
 .btn-primary {
     color: #fff;
-    background-color: #007bff;
-    border-color: #007bff
+    background-color: #8F9779;
+    border-color: #8F9779
 }
 
 .btn-primary:hover {
     color: #fff;
-    background-color: #0069d9;
-    border-color: #0062cc
+    background-color: #7a8268;
+    border-color: #7a8268
 }
 
 .btn-primary.focus,
@@ -2450,16 +2450,16 @@ fieldset[disabled] a.btn {
 
 .btn-primary.disabled,
 .btn-primary:disabled {
-    background-color: #007bff;
-    border-color: #007bff
+    background-color: #8F9779;
+    border-color: #8F9779
 }
 
 .btn-primary:not([disabled]):not(.disabled).active,
 .btn-primary:not([disabled]):not(.disabled):active,
 .show>.btn-primary.dropdown-toggle {
     color: #fff;
-    background-color: #0062cc;
-    border-color: #005cbf;
+    background-color: #8F9779;
+    border-color: #8F9779;
     box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .5)
 }
 
@@ -2688,16 +2688,16 @@ fieldset[disabled] a.btn {
 }
 
 .btn-outline-primary {
-    color: #007bff;
+    color: #8F9779;
     background-color: transparent;
     background-image: none;
-    border-color: #007bff
+    border-color: #8F9779;
 }
 
 .btn-outline-primary:hover {
     color: #fff;
-    background-color: #007bff;
-    border-color: #007bff
+    background-color: #8F9779;
+    border-color: #8F9779;
 }
 
 .btn-outline-primary.focus,
@@ -2715,8 +2715,8 @@ fieldset[disabled] a.btn {
 .btn-outline-primary:not([disabled]):not(.disabled):active,
 .show>.btn-outline-primary.dropdown-toggle {
     color: #fff;
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #8F9779;
+    border-color: #8F9779;
     box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .5)
 }
 
@@ -2958,7 +2958,7 @@ fieldset[disabled] a.btn {
 }
 
 .btn-link:hover {
-    color: #0056b3;
+    color: #8F9779;
     text-decoration: underline;
     background-color: transparent;
     border-color: transparent
@@ -3133,7 +3133,7 @@ tbody.collapse.show {
 .dropdown-item:active {
     color: #fff;
     text-decoration: none;
-    background-color: #007bff
+    background-color: #8F9779
 }
 
 .dropdown-item.disabled,
@@ -3550,7 +3550,7 @@ tbody.collapse.show {
 }
 
 .custom-checkbox .custom-control-input:indeterminate~.custom-control-indicator {
-    background-color: #007bff;
+    background-color: #8F9779;
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 4'%3E%3Cpath stroke='%23fff' d='M0 2h4'/%3E%3C/svg%3E")
 }
 
@@ -3758,7 +3758,7 @@ tbody.collapse.show {
 .nav-pills .nav-link.active,
 .nav-pills .show>.nav-link {
     color: #fff;
-    background-color: #007bff
+    background-color: #8F9779
 }
 
 .nav-fill .nav-item {
@@ -4524,8 +4524,8 @@ tbody.collapse.show {
 .page-item.active .page-link {
     z-index: 2;
     color: #fff;
-    background-color: #007bff;
-    border-color: #007bff
+    background-color: #8F9779;
+    border-color: #8F9779
 }
 
 .page-item.disabled .page-link {
@@ -4615,14 +4615,14 @@ tbody.collapse.show {
 
 .badge-primary {
     color: #fff;
-    background-color: #007bff
+    background-color: #8F9779
 }
 
 .badge-primary[href]:focus,
 .badge-primary[href]:hover {
     color: #fff;
     text-decoration: none;
-    background-color: #0062cc
+    background-color: #8F9779
 }
 
 .badge-secondary {
@@ -4900,7 +4900,7 @@ tbody.collapse.show {
     -ms-flex-pack: center;
     justify-content: center;
     color: #fff;
-    background-color: #007bff
+    background-color: #8F9779
 }
 
 .progress-bar-striped {
