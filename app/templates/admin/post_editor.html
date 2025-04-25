@@ -1,0 +1,367 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+        <div class="sidebar-header">
+            <h3>Admin Dashboard</h3>
+            <p>Welcome, {{ current_user.full_name }}</p>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="{{ url_for('admin.dashboard') }}">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="{{ url_for('admin.new_post') }}">
+                        <i class="fas fa-edit"></i> Write New Post
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin.posts') }}">
+                        <i class="fas fa-list"></i> Manage Posts
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin.comments') }}">
+                        <i class="fas fa-comments"></i> Comments
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin.settings') }}">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin.logout') }}">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-content">
+        <h1>{% if post %}Edit Post{% else %}Write New Post{% endif %}</h1>
+        
+        <form method="POST" enctype="multipart/form-data" class="post-form">
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="title" name="title" 
+                       value="{{ post.title if post else '' }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="content">Content</label>
+                <div id="editor" class="quill-editor"></div>
+                <input type="hidden" id="content" name="content" value="{{ post.content if post else '' }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="image">Featured Image</label>
+                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                {% if post and post.image %}
+                <div class="current-image">
+                    <p>Current Image:</p>
+                    <img src="{{ url_for('static', filename='uploads/' + post.image) }}" alt="Current featured image">
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select class="form-control" id="category" name="category" required>
+                    <option value="">Select a category</option>
+                    <option value="Nutrition" {% if post and post.category == 'Nutrition' %}selected{% endif %}>Nutrition</option>
+                    <option value="Fitness" {% if post and post.category == 'Fitness' %}selected{% endif %}>Fitness</option>
+                    <option value="Lifestyle" {% if post and post.category == 'Lifestyle' %}selected{% endif %}>Lifestyle</option>
+                    <option value="Recipes" {% if post and post.category == 'Recipes' %}selected{% endif %}>Recipes</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="tags">Tags (comma separated)</label>
+                <input type="text" class="form-control" id="tags" name="tags" 
+                       value="{{ post.tags if post else '' }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select class="form-control" id="status" name="status">
+                    <option value="draft" {% if post and post.status == 'draft' %}selected{% endif %}>Draft</option>
+                    <option value="published" {% if post and post.status == 'published' %}selected{% endif %}>Published</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">
+                {% if post %}Update Post{% else %}Publish Post{% endif %}
+            </button>
+            <a href="{{ url_for('admin.posts') }}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.post-form {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.quill-editor {
+    height: 1200px;
+    margin-bottom: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.ql-toolbar {
+    background: #f8f9fa;
+    border: 1px solid #ddd !important;
+    border-radius: 8px 8px 0 0;
+    padding: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.ql-container {
+    border: 1px solid #ddd !important;
+    border-top: none !important;
+    border-radius: 0 0 8px 8px;
+    height: calc(100% - 58px);
+    background: white;
+}
+
+.ql-editor {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.8;
+    padding: 20px;
+    color: #333;
+}
+
+.ql-editor.ql-blank::before {
+    color: #999;
+    font-style: normal;
+    font-size: 18px;
+    left: 20px;
+}
+
+.ql-editor p {
+    margin-bottom: 1.2em;
+}
+
+.ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6 {
+    margin-top: 1.5em;
+    margin-bottom: 1em;
+    line-height: 1.4;
+}
+
+.ql-editor ul, .ql-editor ol {
+    padding-left: 1.5em;
+    margin-bottom: 1.2em;
+}
+
+.ql-editor li {
+    margin-bottom: 0.5em;
+}
+
+.ql-editor blockquote {
+    border-left: 4px solid #3498db;
+    padding-left: 1em;
+    margin: 1.5em 0;
+    color: #666;
+}
+
+.ql-editor img {
+    max-width: 100%;
+    height: auto;
+    margin: 1.5em 0;
+    border-radius: 4px;
+}
+
+.ql-toolbar .ql-stroke {
+    stroke: #666;
+}
+
+.ql-toolbar .ql-fill {
+    fill: #666;
+}
+
+.ql-toolbar .ql-picker {
+    color: #666;
+}
+
+.ql-toolbar .ql-picker-options {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
+    border-color: #ddd;
+}
+
+.ql-toolbar .ql-picker.ql-expanded .ql-picker-options {
+    border-color: #ddd;
+}
+
+.ql-toolbar .ql-picker-label:hover,
+.ql-toolbar .ql-picker-label.ql-active,
+.ql-toolbar .ql-picker-item:hover,
+.ql-toolbar .ql-picker-item.ql-selected {
+    color: #3498db;
+}
+
+.ql-toolbar .ql-picker-label:hover .ql-stroke,
+.ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+.ql-toolbar .ql-picker-item:hover .ql-stroke,
+.ql-toolbar .ql-picker-item.ql-selected .ql-stroke {
+    stroke: #3498db;
+}
+
+.ql-toolbar .ql-picker-label:hover .ql-fill,
+.ql-toolbar .ql-picker-label.ql-active .ql-fill,
+.ql-toolbar .ql-picker-item:hover .ql-fill,
+.ql-toolbar .ql-picker-item.ql-selected .ql-fill {
+    fill: #3498db;
+}
+
+/* Add focus styles */
+.ql-editor:focus {
+    outline: none;
+}
+
+.ql-editor:focus-within {
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Add smooth transitions */
+.ql-toolbar .ql-picker,
+.ql-toolbar button {
+    transition: all 0.2s ease;
+}
+
+/* Improve spacing in the toolbar */
+.ql-toolbar .ql-formats {
+    margin-right: 15px;
+}
+
+/* Add hover effect to toolbar buttons */
+.ql-toolbar button:hover {
+    background-color: #f0f0f0;
+    border-radius: 4px;
+}
+
+/* Make the editor container more spacious */
+.editor-container {
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 12px;
+}
+
+/* Add a subtle gradient to the toolbar */
+.ql-toolbar {
+    background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+}
+
+.current-image {
+    margin-top: 10px;
+}
+
+.current-image img {
+    max-width: 200px;
+    border-radius: 4px;
+}
+
+.btn {
+    padding: 10px 20px;
+    margin-right: 10px;
+}
+
+.btn-primary {
+    background: #3498db;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+.btn-secondary {
+    background: #95a5a6;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background: #7f8c8d;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Quill editor
+    var quill = new Quill('#editor', {
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'font': [] }],
+                [{ 'align': [] }],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                ['link', 'image', 'video'],
+                ['clean']
+            ],
+            imageResize: {
+                displaySize: true
+            },
+            clipboard: {
+                matchVisual: false
+            }
+        },
+        theme: 'snow',
+        placeholder: 'Write your blog post here...'
+    });
+
+    // Set initial content if editing existing post
+    {% if post %}
+    quill.root.innerHTML = {{ post.content|tojson|safe }};
+    {% endif %}
+
+    // Update hidden input before form submission
+    document.querySelector('form').onsubmit = function() {
+        var content = document.querySelector('input[name=content]');
+        content.value = quill.root.innerHTML;
+    };
+});
+</script>
+{% endblock %} 

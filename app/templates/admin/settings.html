@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+        <div class="sidebar-header">
+            <h3>Admin Dashboard</h3>
+            <p>Welcome, {{ current_user.full_name }}</p>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="{{ url_for('admin.dashboard') }}">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin.new_post') }}">
+                        <i class="fas fa-edit"></i> Write New Post
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin.posts') }}">
+                        <i class="fas fa-list"></i> Manage Posts
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin.comments') }}">
+                        <i class="fas fa-comments"></i> Comments
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="{{ url_for('admin.settings') }}">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin.logout') }}">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-content">
+        <h1>Settings</h1>
+        
+        <div class="settings-container">
+            <!-- General Settings -->
+            <div class="settings-section">
+                <h2>General Settings</h2>
+                <form method="POST" action="{{ url_for('admin.update_settings') }}">
+                    <div class="form-group">
+                        <label for="blog_title">Blog Title</label>
+                        <input type="text" class="form-control" id="blog_title" name="blog_title" 
+                               value="{{ settings.blog_title }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="blog_description">Blog Description</label>
+                        <textarea class="form-control" id="blog_description" name="blog_description" 
+                                  rows="3">{{ settings.blog_description }}</textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="posts_per_page">Posts Per Page</label>
+                        <input type="number" class="form-control" id="posts_per_page" name="posts_per_page" 
+                               value="{{ settings.posts_per_page }}" min="1" max="50" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Save General Settings</button>
+                </form>
+            </div>
+            
+            <!-- Social Media Settings -->
+            <div class="settings-section">
+                <h2>Social Media</h2>
+                <form method="POST" action="{{ url_for('admin.update_social_settings') }}">
+                    <div class="form-group">
+                        <label for="facebook_url">Facebook URL</label>
+                        <input type="url" class="form-control" id="facebook_url" name="facebook_url" 
+                               value="{{ settings.facebook_url }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="twitter_url">Twitter URL</label>
+                        <input type="url" class="form-control" id="twitter_url" name="twitter_url" 
+                               value="{{ settings.twitter_url }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="instagram_url">Instagram URL</label>
+                        <input type="url" class="form-control" id="instagram_url" name="instagram_url" 
+                               value="{{ settings.instagram_url }}">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Save Social Settings</button>
+                </form>
+            </div>
+            
+            <!-- Email Settings -->
+            <div class="settings-section">
+                <h2>Email Settings</h2>
+                <form method="POST" action="{{ url_for('admin.update_email_settings') }}">
+                    <div class="form-group">
+                        <label for="smtp_server">SMTP Server</label>
+                        <input type="text" class="form-control" id="smtp_server" name="smtp_server" 
+                               value="{{ settings.smtp_server }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="smtp_port">SMTP Port</label>
+                        <input type="number" class="form-control" id="smtp_port" name="smtp_port" 
+                               value="{{ settings.smtp_port }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="smtp_username">SMTP Username</label>
+                        <input type="text" class="form-control" id="smtp_username" name="smtp_username" 
+                               value="{{ settings.smtp_username }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="smtp_password">SMTP Password</label>
+                        <input type="password" class="form-control" id="smtp_password" name="smtp_password" 
+                               value="{{ settings.smtp_password }}">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Save Email Settings</button>
+                </form>
+            </div>
+            
+            <!-- Comment Settings -->
+            <div class="settings-section">
+                <h2>Comment Settings</h2>
+                <form method="POST" action="{{ url_for('admin.update_comment_settings') }}">
+                    <div class="form-group">
+                        <label for="comment_moderation">Comment Moderation</label>
+                        <select class="form-control" id="comment_moderation" name="comment_moderation">
+                            <option value="auto" {% if settings.comment_moderation == 'auto' %}selected{% endif %}>Auto-approve</option>
+                            <option value="manual" {% if settings.comment_moderation == 'manual' %}selected{% endif %}>Manual approval</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comment_notification">Email Notification for New Comments</label>
+                        <select class="form-control" id="comment_notification" name="comment_notification">
+                            <option value="yes" {% if settings.comment_notification == 'yes' %}selected{% endif %}>Yes</option>
+                            <option value="no" {% if settings.comment_notification == 'no' %}selected{% endif %}>No</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Save Comment Settings</button>
+                </form>
+            </div>
+            
+            <!-- Backup Settings -->
+            <div class="settings-section">
+                <h2>Backup Settings</h2>
+                <form method="POST" action="{{ url_for('admin.update_backup_settings') }}">
+                    <div class="form-group">
+                        <label for="backup_frequency">Backup Frequency</label>
+                        <select class="form-control" id="backup_frequency" name="backup_frequency">
+                            <option value="daily" {% if settings.backup_frequency == 'daily' %}selected{% endif %}>Daily</option>
+                            <option value="weekly" {% if settings.backup_frequency == 'weekly' %}selected{% endif %}>Weekly</option>
+                            <option value="monthly" {% if settings.backup_frequency == 'monthly' %}selected{% endif %}>Monthly</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="backup_retention">Backup Retention (days)</label>
+                        <input type="number" class="form-control" id="backup_retention" name="backup_retention" 
+                               value="{{ settings.backup_retention }}" min="1" max="365">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Save Backup Settings</button>
+                    <button type="button" class="btn btn-secondary" onclick="createBackup()">Create Backup Now</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.settings-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.settings-section h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn {
+    padding: 10px 20px;
+    margin-right: 10px;
+}
+
+.btn-primary {
+    background: #3498db;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+.btn-secondary {
+    background: #95a5a6;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background: #7f8c8d;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function createBackup() {
+    if (confirm('Are you sure you want to create a backup now?')) {
+        fetch('{{ url_for("admin.create_backup") }}', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Backup created successfully!');
+            } else {
+                alert('Failed to create backup: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while creating the backup');
+        });
+    }
+}
+</script>
+{% endblock %} 
