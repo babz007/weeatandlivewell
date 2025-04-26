@@ -1,0 +1,157 @@
+/* Theme Colors */
+:root {
+    --primary-color: #8F9779;  /* Sage green */
+    --secondary-color: #D2B48C;  /* Beige */
+    --accent-color: #6B8E23;  /* Olive green */
+    --text-color: #333;
+    --light-bg: #F5F5DC;  /* Light beige */
+    --dark-bg: #556B2F;  /* Dark olive green */
+}
+
+/* Button Styles */
+.btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn:hover {
+    background-color: var(--accent-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn.secondary {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+.btn.secondary:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Icon Styles */
+.single-features .signle-icon i,
+.single-service i {
+    color: var(--primary-color);
+    font-size: 40px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.single-features:hover .signle-icon i,
+.single-service:hover i {
+    color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+/* Social Icons */
+.social li a {
+    background-color: var(--primary-color);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.social li a:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-3px);
+}
+
+/* Form Elements */
+.form-group input,
+.form-group textarea {
+    border: 1px solid var(--secondary-color);
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(143, 151, 121, 0.2);
+}
+
+/* Search Widget */
+.search-widget .search-form input {
+    border-color: var(--secondary-color);
+}
+
+.search-widget .search-form button {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.search-widget .search-form button:hover {
+    background-color: var(--accent-color);
+}
+
+/* Navigation Links */
+.nav menu li a {
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.nav menu li a:hover {
+    color: var(--primary-color);
+}
+
+/* Testimonial Icons */
+.testimonial-author i {
+    color: var(--primary-color);
+}
+
+/* Newsletter Button */
+.newsletter .btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+}
+
+.newsletter .btn:hover {
+    background-color: var(--accent-color);
+}
+
+/* Breadcrumb Links */
+.bread-list li a {
+    color: var(--text-color);
+}
+
+.bread-list li a:hover {
+    color: var(--primary-color);
+}
+
+/* Category Links */
+.categor-list li a {
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.categor-list li a:hover {
+    color: var(--primary-color);
+    padding-left: 5px;
+}
+
+/* Comment Icons */
+.comment-meta i {
+    color: var(--primary-color);
+}
+
+/* Social Share Icons */
+.social-share li a {
+    background-color: var(--primary-color);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.social-share li a:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-3px);
+} 

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Editor - We Eat and Live Well</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/editor.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="loader">
+            <div class="loader-outter"></div>
+            <div class="loader-inner"></div>
+            <div class="indicator"> 
+                <svg width="16px" height="12px">
+                    <polyline id="back" points="1 6 4 6 6 11 10 1 12 6 15 6"></polyline>
+                    <polyline id="front" points="1 6 4 6 6 11 10 1 12 6 15 6"></polyline>
+                </svg>
+            </div>
+        </div>
+    </div>
+    <!-- End Preloader -->
+    
+    <!-- Header will be loaded here -->
+    <header></header>
+    
+    <!-- Breadcrumbs -->
+    <section class="breadcrumbs">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="bread-inner">
+                        <ul class="bread-list">
+                            <li><a href="index.html">Home<i class="ti-arrow-right"></i></a></li>
+                            <li class="active"><a href="blog-editor.html">Blog Editor</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Breadcrumbs -->
+    
+    <!-- Blog Editor -->
+    <section class="blog-editor section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="editor-container">
+                        <form id="blogForm" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="title">Title</label>
+                                <input type="text" class="form-control" id="title" name="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="content">Content</label>
+                                <div id="editor" class="quill-editor"></div>
+                                <input type="hidden" id="content" name="content">
+                            </div>
+                            <div class="form-group">
+                                <label for="image">Featured Image</label>
+                                <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <select class="form-control" id="category" name="category" required>
+                                    <option value="">Select a category</option>
+                                    <option value="Nutrition">Nutrition</option>
+                                    <option value="Fitness">Fitness</option>
+                                    <option value="Lifestyle">Lifestyle</option>
+                                    <option value="Recipes">Recipes</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="tags">Tags (comma separated)</label>
+                                <input type="text" class="form-control" id="tags" name="tags">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Publish Post</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Blog Editor -->
+    
+    <!-- Footer will be loaded here -->
+    <footer></footer>
+    
+    <!-- jquery Min JS -->
+    <script src="js/jquery.min.js"></script>
+    <!-- jquery Migrate JS -->
+    <script src="js/jquery-migrate-3.0.0.js"></script>
+    <!-- jquery Ui JS -->
+    <script src="js/jquery-ui.min.js"></script>
+    <!-- Easing JS -->
+    <script src="js/easing.js"></script>
+    <!-- Color JS -->
+    <script src="js/colors.js"></script>
+    <!-- Popper JS -->
+    <script src="js/popper.min.js"></script>
+    <!-- Bootstrap Datepicker JS -->
+    <script src="js/bootstrap-datepicker.js"></script>
+    <!-- Jquery Nav JS -->
+    <script src="js/jquery.nav.js"></script>
+    <!-- Slicknav JS -->
+    <script src="js/slicknav.min.js"></script>
+    <!-- ScrollUp JS -->
+    <script src="js/jquery.scrollUp.min.js"></script>
+    <!-- Niceselect JS -->
+    <script src="js/niceselect.js"></script>
+    <!-- Tilt Jquery JS -->
+    <script src="js/tilt.jquery.min.js"></script>
+    <!-- Owl Carousel JS -->
+    <script src="js/owl-carousel.js"></script>
+    <!-- counterup JS -->
+    <script src="js/jquery.counterup.min.js"></script>
+    <!-- Steller JS -->
+    <script src="js/steller.js"></script>
+    <!-- Wow JS -->
+    <script src="js/wow.min.js"></script>
+    <!-- Magnific Popup JS -->
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <!-- Counter Up JS -->
+    <script src="js/waypoints.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Main JS -->
+    <script src="js/main.js"></script>
+    <!-- Partials JS -->
+    <script src="js/partials.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <style>
+    .editor-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 30px;
+        background: #f9f9f9;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .quill-editor {
+        height: 800px;
+        margin-bottom: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .ql-toolbar {
+        background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+        border: 1px solid #ddd !important;
+        border-radius: 8px 8px 0 0;
+        padding: 8px;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .ql-container {
+        border: 1px solid #ddd !important;
+        border-top: none !important;
+        border-radius: 0 0 8px 8px;
+        height: calc(100% - 58px);
+        background: white;
+    }
+
+    .ql-editor {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        font-size: 18px;
+        line-height: 1.8;
+        padding: 20px;
+        color: #333;
+    }
+
+    .ql-editor.ql-blank::before {
+        color: #999;
+        font-style: normal;
+        font-size: 18px;
+        left: 20px;
+    }
+
+    .ql-editor p {
+        margin-bottom: 1.2em;
+    }
+
+    .ql-editor h1, .ql-editor h2, .ql-editor h3, .ql-editor h4, .ql-editor h5, .ql-editor h6 {
+        margin-top: 1.5em;
+        margin-bottom: 1em;
+        line-height: 1.4;
+    }
+
+    .ql-editor ul, .ql-editor ol {
+        padding-left: 1.5em;
+        margin-bottom: 1.2em;
+    }
+
+    .ql-editor li {
+        margin-bottom: 0.5em;
+    }
+
+    .ql-editor blockquote {
+        border-left: 4px solid #3498db;
+        padding-left: 1em;
+        margin: 1.5em 0;
+        color: #666;
+    }
+
+    .ql-editor img {
+        max-width: 100%;
+        height: auto;
+        margin: 1.5em 0;
+        border-radius: 4px;
+    }
+
+    .ql-toolbar .ql-stroke {
+        stroke: #666;
+    }
+
+    .ql-toolbar .ql-fill {
+        fill: #666;
+    }
+
+    .ql-toolbar .ql-picker {
+        color: #666;
+    }
+
+    .ql-toolbar .ql-picker-options {
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
+        border-color: #ddd;
+    }
+
+    .ql-toolbar .ql-picker.ql-expanded .ql-picker-options {
+        border-color: #ddd;
+    }
+
+    .ql-toolbar .ql-picker-label:hover,
+    .ql-toolbar .ql-picker-label.ql-active,
+    .ql-toolbar .ql-picker-item:hover,
+    .ql-toolbar .ql-picker-item.ql-selected {
+        color: #3498db;
+    }
+
+    .ql-toolbar .ql-picker-label:hover .ql-stroke,
+    .ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+    .ql-toolbar .ql-picker-item:hover .ql-stroke,
+    .ql-toolbar .ql-picker-item.ql-selected .ql-stroke {
+        stroke: #3498db;
+    }
+
+    .ql-toolbar .ql-picker-label:hover .ql-fill,
+    .ql-toolbar .ql-picker-label.ql-active .ql-fill,
+    .ql-toolbar .ql-picker-item:hover .ql-fill,
+    .ql-toolbar .ql-picker-item.ql-selected .ql-fill {
+        fill: #3498db;
+    }
+
+    /* Add focus styles */
+    .ql-editor:focus {
+        outline: none;
+    }
+
+    .ql-editor:focus-within {
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+
+    /* Add smooth transitions */
+    .ql-toolbar .ql-picker,
+    .ql-toolbar button {
+        transition: all 0.2s ease;
+    }
+
+    /* Improve spacing in the toolbar */
+    .ql-toolbar .ql-formats {
+        margin-right: 15px;
+    }
+
+    /* Add hover effect to toolbar buttons */
+    .ql-toolbar button:hover {
+        background-color: #f0f0f0;
+        border-radius: 4px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        margin-right: 10px;
+    }
+
+    .btn-primary {
+        background: #3498db;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background: #2980b9;
+    }
+    </style>
+    <script>
+    // Initialize Quill editor
+    var quill = new Quill('#editor', {
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'font': [] }],
+                [{ 'align': [] }],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                ['link', 'image', 'video'],
+                ['clean']
+            ],
+            imageResize: {
+                displaySize: true
+            },
+            clipboard: {
+                matchVisual: false
+            }
+        },
+        theme: 'snow',
+        placeholder: 'Write your blog post here...'
+    });
+
+    // Update hidden input before form submission
+    document.getElementById('blogForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        formData.set('content', quill.root.innerHTML);
+        
+        fetch('/api/posts', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Blog post published successfully!');
+                window.location.href = 'blog-list.html';
+            } else {
+                alert('Error publishing post: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while publishing the post');
+        });
+    });
+    </script>
+</body>
+</html> 

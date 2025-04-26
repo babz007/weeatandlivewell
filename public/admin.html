@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - We Eat and Live Well</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/themify-icons.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/owl.carousel.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Login Section -->
+    <div id="loginSection" class="login-form">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="login-container">
+                        <h2>Admin Login</h2>
+                        
+                        <!-- Regular Login Form -->
+                        <form id="regularLoginForm" method="POST" action="/admin/login" class="mb-4">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        </form>
+                        
+                        <div class="text-center mb-3">
+                            <span class="divider">OR</span>
+                        </div>
+                        
+                        <!-- Google Login Button -->
+                        <button id="googleLogin" class="btn btn-primary btn-block">
+                            <i class="fa fa-google"></i> Sign in with Google
+                        </button>
+                        
+                        <div id="loginError" class="alert alert-danger mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" style="display: none;">
+        <!-- Header -->
+        <header class="header-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <nav class="navbar navbar-expand-lg">
+                            <a class="navbar-brand" href="index.html">We Eat and Live Well</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                <ul class="navbar-nav ml-auto">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="index.html">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button id="logoutBtn" class="btn btn-link nav-link">Logout</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Breadcrumbs -->
+        <div class="breadcrumbs">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="bread-inner">
+                            <ul class="bread-list">
+                                <li><a href="index.html">Home</a></li>
+                                <li><i class="fa fa-angle-double-right"></i></li>
+                                <li class="active">Admin Dashboard</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Content -->
+        <div class="container mt-5">
+            <!-- Admin Actions -->
+            <div class="admin-actions">
+                <button id="newPostBtn" class="btn btn-primary">
+                    <i class="fa fa-plus"></i> New Post
+                </button>
+                <button id="whitelistBtn" class="btn btn-info">
+                    <i class="fa fa-user-plus"></i> Manage Whitelist
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="admin-stats">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <h3>Total Posts</h3>
+                            <p id="totalPosts">0</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <h3>Total Comments</h3>
+                            <p id="totalComments">0</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <h3>Total Subscribers</h3>
+                            <p id="totalSubscribers">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Posts -->
+            <div class="recent-posts">
+                <h2>Recent Posts</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Date Posted</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentPostsTable">
+                            <!-- Posts will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="footer-social">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="copyright">
+                            <p>Copyright © 2024 We Eat and Live Well. All Rights Reserved.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Whitelist Modal -->
+    <div class="modal fade" id="whitelistModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Manage Whitelist</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="whitelistForm">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" class="form-control" name="full_name" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add to Whitelist</button>
+                    </form>
+                    <div class="mt-4">
+                        <h6>Whitelisted Users</h6>
+                        <ul id="whitelistUsers" class="list-group">
+                            <!-- Whitelisted users will be loaded here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        let authToken = null;
+
+        // Check for token in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        const error = urlParams.get('error');
+
+        if (token) {
+            authToken = token;
+            localStorage.setItem('authToken', token);
+            showAdminDashboard();
+        } else if (error) {
+            document.getElementById('loginError').textContent = 'Authentication failed. Please try again.';
+            document.getElementById('loginError').style.display = 'block';
+        } else {
+            const storedToken = localStorage.getItem('authToken');
+            if (storedToken) {
+                authToken = storedToken;
+                showAdminDashboard();
+            }
+        }
+
+        // Regular Login
+        document.getElementById('regularLoginForm').addEventListener('submit', async (e) => {
+            // Let the form submit normally
+            return true;
+        });
+
+        // Google Login
+        document.getElementById('googleLogin').addEventListener('click', () => {
+            window.location.href = '/api/auth/google';
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('authToken');
+            window.location.href = '/admin.html';
+        });
+
+        // Show Admin Dashboard
+        function showAdminDashboard() {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'block';
+            loadDashboardData();
+        }
+
+        // Load Dashboard Data
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('/api/admin/stats', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load dashboard data');
+                }
+
+                const data = await response.json();
+                
+                // Update stats
+                document.getElementById('totalPosts').textContent = data.totalPosts;
+                document.getElementById('totalComments').textContent = data.totalComments;
+                document.getElementById('totalSubscribers').textContent = data.totalSubscribers;
+                
+                // Update recent posts table
+                const postsTable = document.getElementById('recentPostsTable');
+                postsTable.innerHTML = data.recentPosts.map(post => `
+                    <tr>
+                        <td>${post.title}</td>
+                        <td>${new Date(post.date_posted).toLocaleDateString()}</td>
+                        <td>${post.status}</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary">Edit</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+            }
+        }
+
+        // Whitelist Management
+        document.getElementById('whitelistBtn').addEventListener('click', () => {
+            $('#whitelistModal').modal('show');
+        });
+
+        document.getElementById('whitelistForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            try {
+                const response = await fetch('/api/admin/whitelist', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: formData.get('email'),
+                        full_name: formData.get('full_name')
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to add user to whitelist');
+                }
+
+                e.target.reset();
+                loadWhitelistUsers();
+            } catch (error) {
+                console.error('Error adding user to whitelist:', error);
+            }
+        });
+
+        async function loadWhitelistUsers() {
+            try {
+                const response = await fetch('/api/admin/whitelist', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load whitelist users');
+                }
+
+                const users = await response.json();
+                const whitelistUsers = document.getElementById('whitelistUsers');
+                
+                whitelistUsers.innerHTML = users.map(user => `
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        ${user.email} (${user.full_name})
+                        <button class="btn btn-sm btn-danger" onclick="removeFromWhitelist('${user.email}')">
+                            Remove
+                        </button>
+                    </li>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading whitelist users:', error);
+            }
+        }
+
+        async function removeFromWhitelist(email) {
+            try {
+                const response = await fetch(`/api/admin/whitelist/${email}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to remove user from whitelist');
+                }
+
+                loadWhitelistUsers();
+            } catch (error) {
+                console.error('Error removing user from whitelist:', error);
+            }
+        }
+    </script>
+</body>
+</html> 
