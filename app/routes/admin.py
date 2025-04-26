@@ -1,9 +1,22 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify
+from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify, current_app
 from flask_login import login_required, current_user, login_user, logout_user
-from app.models.blog import AdminUser, Post, Comment
+from app.models.blog import AdminUser, Post, Comment, PostImage
 from app import db
 from datetime import datetime, timedelta
 from functools import wraps
+from werkzeug.utils import secure_filename
+import os
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
+# Ensure uploads directory exists
+UPLOAD_FOLDER = os.path.join('public', 'uploads')
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+    logger.info(f"Created uploads directory at: {UPLOAD_FOLDER}")
 
 admin = Blueprint('admin', __name__)
 
@@ -91,19 +104,67 @@ def dashboard():
 @admin_required
 def new_post():
     if request.method == 'POST':
-        title = request.form.get('title')
-        content = request.form.get('content')
-        
-        if not title or not content:
-            flash('Title and content are required', 'error')
+        try:
+            # Get form data
+            title = request.form.get('title')
+            content = request.form.get('content')
+            
+            logger.debug(f"Creating new post. Title: {title}")
+            logger.debug(f"Content length: {len(content) if content else 0}")
+            logger.debug(f"Form data: {request.form}")
+            logger.debug(f"Files: {request.files}")
+            
+            if not title or not content:
+                logger.error("Missing title or content")
+                logger.error(f"Title: {title}")
+                logger.error(f"Content: {content}")
+                flash('Title and content are required', 'error')
+                return render_template('admin/post_editor.html')
+            
+            # Create new post
+            post = Post(
+                title=title,
+                content=content,
+                date_posted=datetime.utcnow()
+            )
+            logger.debug(f"Created Post object: {post}")
+            
+            db.session.add(post)
+            db.session.commit()
+            logger.debug(f"Post saved to database. ID: {post.id}")
+
+            # Handle image uploads
+            if 'image' in request.files:
+                image = request.files['image']
+                if image and image.filename:
+                    logger.debug(f"Processing image upload: {image.filename}")
+                    filename = secure_filename(image.filename)
+                    image_path = os.path.join(UPLOAD_FOLDER, filename)
+                    logger.debug(f"Saving image to: {image_path}")
+                    
+                    # Ensure the uploads directory exists
+                    if not os.path.exists(UPLOAD_FOLDER):
+                        os.makedirs(UPLOAD_FOLDER)
+                        logger.info(f"Created uploads directory at: {UPLOAD_FOLDER}")
+                    
+                    image.save(image_path)
+                    logger.debug(f"Image saved successfully to: {image_path}")
+                    
+                    post_image = PostImage(filename=filename, post_id=post.id)
+                    logger.debug(f"Created PostImage object: {post_image}")
+                    db.session.add(post_image)
+                    db.session.commit()
+                    logger.debug("Image saved to database")
+
+            flash('Post created successfully', 'success')
+            logger.info(f"Successfully created post with ID: {post.id}")
+            return redirect(url_for('admin.posts'))
+            
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f"Error creating post: {str(e)}", exc_info=True)
+            flash(f'Error creating post: {str(e)}', 'error')
             return render_template('admin/post_editor.html')
-        
-        post = Post(title=title, content=content)
-        db.session.add(post)
-        db.session.commit()
-        
-        flash('Post created successfully', 'success')
-        return redirect(url_for('admin.posts'))
     
     return render_template('admin/post_editor.html')
 
@@ -120,14 +181,52 @@ def posts():
 @admin_required
 def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
+    logger.debug(f"Editing post ID: {post_id}")
     
     if request.method == 'POST':
-        post.title = request.form.get('title')
-        post.content = request.form.get('content')
-        db.session.commit()
-        
-        flash('Post updated successfully', 'success')
-        return redirect(url_for('admin.posts'))
+        try:
+            new_title = request.form.get('title')
+            new_content = request.form.get('content')
+            
+            logger.debug(f"Updating post. New title: {new_title}")
+            logger.debug(f"New content length: {len(new_content) if new_content else 0}")
+            
+            post.title = new_title
+            post.content = new_content
+            
+            # Handle image uploads
+            if 'image' in request.files:
+                image = request.files['image']
+                if image and image.filename:
+                    logger.debug(f"Processing image upload: {image.filename}")
+                    filename = secure_filename(image.filename)
+                    image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+                    logger.debug(f"Saving image to: {image_path}")
+                    image.save(image_path)
+                    
+                    # Delete old images
+                    for old_image in post.images:
+                        logger.debug(f"Deleting old image: {old_image.filename}")
+                        old_image_path = os.path.join(current_app.config['UPLOAD_FOLDER'], old_image.filename)
+                        if os.path.exists(old_image_path):
+                            os.remove(old_image_path)
+                        db.session.delete(old_image)
+                    
+                    # Add new image
+                    post_image = PostImage(filename=filename, post_id=post.id)
+                    logger.debug(f"Created new PostImage object: {post_image}")
+                    db.session.add(post_image)
+            
+            db.session.commit()
+            logger.info(f"Successfully updated post ID: {post_id}")
+            flash('Post updated successfully', 'success')
+            return redirect(url_for('admin.posts'))
+            
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f"Error updating post: {str(e)}", exc_info=True)
+            flash(f'Error updating post: {str(e)}', 'error')
+            return render_template('admin/post_editor.html', post=post)
     
     return render_template('admin/post_editor.html', post=post)
 

@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+        <div class="sidebar-header">
+            <h3>Admin Dashboard</h3>
+            <p>Welcome, {{ current_user.full_name }}</p>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="{{ url_for('admin.dashboard') }}">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin.new_post') }}">
+                        <i class="fas fa-edit"></i> Write New Post
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="{{ url_for('admin.posts') }}">
+                        <i class="fas fa-list"></i> Manage Posts
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin.comments') }}">
+                        <i class="fas fa-comments"></i> Comments
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin.settings') }}">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin.logout') }}">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-content">
+        <h1>Manage Posts</h1>
+        
+        <div class="posts-list">
+            {% for post in posts.items %}
+            <div class="post-item">
+                <div class="post-header">
+                    <h2>{{ post.title }}</h2>
+                    <div class="post-actions">
+                        <a href="{{ url_for('admin.edit_post', post_id=post.id) }}" class="btn btn-edit">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <button class="btn btn-delete" onclick="deletePost({{ post.id }})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+                <div class="post-meta">
+                    <span class="post-date">{{ post.date_posted.strftime('%Y-%m-%d %H:%M') }}</span>
+                    <span class="post-comments">{{ post.comments|length }} comments</span>
+                </div>
+                {% if post.images %}
+                <div class="post-image">
+                    <img src="{{ url_for('static', filename='uploads/' + post.images[0].filename) }}" alt="{{ post.title }}">
+                </div>
+                {% endif %}
+                <div class="post-preview">
+                    {{ post.content|safe|truncate(200) }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            {% if posts.has_prev %}
+            <a href="{{ url_for('admin.posts', page=posts.prev_num) }}" class="btn btn-prev">
+                <i class="fas fa-chevron-left"></i> Previous
+            </a>
+            {% endif %}
+            
+            {% if posts.has_next %}
+            <a href="{{ url_for('admin.posts', page=posts.next_num) }}" class="btn btn-next">
+                Next <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function deletePost(postId) {
+    if (confirm('Are you sure you want to delete this post?')) {
+        fetch(`/admin/posts/${postId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.reload();
+            } else {
+                alert('Error deleting post');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error deleting post');
+        });
+    }
+}
+</script>
+{% endblock %}
+
+{% block styles %}
+<style>
+.posts-list {
+    margin-top: 20px;
+}
+
+.post-item {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.post-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.post-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.post-meta {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.post-image {
+    margin-bottom: 15px;
+}
+
+.post-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.post-preview {
+    color: #333;
+    line-height: 1.6;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-edit {
+    background: #3498db;
+    color: white;
+}
+
+.btn-delete {
+    background: #e74c3c;
+    color: white;
+    border: none;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-prev, .btn-next {
+    background: #f8f9fa;
+    color: #333;
+}
+</style>
+{% endblock %} 
