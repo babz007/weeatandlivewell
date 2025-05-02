@@ -1,12 +1,14 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify, current_app
 from flask_login import login_required, current_user, login_user, logout_user
 from app.models.blog import AdminUser, Post, Comment, PostImage
-from app import db
+from app import db, csrf
 from datetime import datetime, timedelta
 from functools import wraps
 from werkzeug.utils import secure_filename
 import os
 import logging
+from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import inspect
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -28,28 +30,73 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+@admin.route('/register', methods=['GET', 'POST'])
+def register():
+    # Check if any admin user exists
+    if AdminUser.query.first() and not os.getenv('ALLOW_ADMIN_REGISTRATION', '').lower() == 'true':
+        flash('Admin registration is disabled.', 'danger')
+        return redirect(url_for('admin.login'))
+
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+        registration_key = request.form.get('registration_key')
+
+        # Validate registration key
+        if registration_key != os.getenv('ADMIN_REGISTRATION_KEY'):
+            flash('Invalid registration key.', 'danger')
+            return render_template('admin/register.html')
+
+        # Validate password
+        if password != confirm_password:
+            flash('Passwords do not match.', 'danger')
+            return render_template('admin/register.html')
+
+        if len(password) < 8:
+            flash('Password must be at least 8 characters long.', 'danger')
+            return render_template('admin/register.html')
+
+        # Check if username exists
+        if AdminUser.query.filter_by(username=username).first():
+            flash('Username already exists.', 'danger')
+            return render_template('admin/register.html')
+
+        # Create new admin user
+        try:
+            new_admin = AdminUser(
+                username=username,
+                password_hash=generate_password_hash(password, method='pbkdf2:sha256')
+            )
+            db.session.add(new_admin)
+            db.session.commit()
+            flash('Registration successful! Please log in.', 'success')
+            return redirect(url_for('admin.login'))
+        except Exception as e:
+            db.session.rollback()
+            flash('An error occurred during registration.', 'danger')
+            return render_template('admin/register.html')
+
+    return render_template('admin/register.html')
+
 @admin.route('/login', methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('admin.dashboard'))
-    
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
         
         if not username or not password:
-            flash('Username and password are required', 'error')
+            flash('Username and password are required.', 'danger')
             return render_template('admin/login.html')
         
         user = AdminUser.query.filter_by(username=username).first()
         
-        if user and user.check_password(password):
+        if user and check_password_hash(user.password_hash, password):
             login_user(user)
-            user.last_login = datetime.utcnow()
-            db.session.commit()
+            flash('Login successful!', 'success')
             return redirect(url_for('admin.dashboard'))
         
-        flash('Invalid username or password', 'error')
+        flash('Invalid username or password.', 'danger')
     
     return render_template('admin/login.html')
 
@@ -57,6 +104,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    flash('You have been logged out.', 'success')
     return redirect(url_for('admin.login'))
 
 @admin.route('/dashboard')
@@ -74,21 +122,21 @@ def dashboard():
     recent_activity = []
     
     # Add recent posts
-    recent_posts = Post.query.order_by(Post.date_posted.desc()).limit(5).all()
+    recent_posts = Post.query.order_by(Post.created_at.desc()).limit(5).all()
     for post in recent_posts:
         recent_activity.append({
             'icon': 'file-alt',
             'text': f'New post created: {post.title}',
-            'time': post.date_posted.strftime('%Y-%m-%d %H:%M')
+            'time': post.created_at.strftime('%Y-%m-%d %H:%M')
         })
     
     # Add recent comments
-    recent_comments = Comment.query.order_by(Comment.date_posted.desc()).limit(5).all()
+    recent_comments = Comment.query.order_by(Comment.created_at.desc()).limit(5).all()
     for comment in recent_comments:
         recent_activity.append({
             'icon': 'comment',
-            'text': f'New comment by {comment.author} on {comment.post.title}',
-            'time': comment.date_posted.strftime('%Y-%m-%d %H:%M')
+            'text': f'New comment by {comment.author_name} on {comment.post.title}',
+            'time': comment.created_at.strftime('%Y-%m-%d %H:%M')
         })
     
     # Sort activities by time
@@ -125,7 +173,9 @@ def new_post():
             post = Post(
                 title=title,
                 content=content,
-                date_posted=datetime.utcnow()
+                author_id=current_user.id,
+                category=request.form.get('category'),
+                status=request.form.get('status', 'draft')
             )
             logger.debug(f"Created Post object: {post}")
             
@@ -173,7 +223,7 @@ def new_post():
 @admin_required
 def posts():
     page = request.args.get('page', 1, type=int)
-    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=10)
+    posts = Post.query.order_by(Post.created_at.desc()).paginate(page=page, per_page=10)
     return render_template('admin/posts.html', posts=posts)
 
 @admin.route('/posts/<int:post_id>/edit', methods=['GET', 'POST'])
@@ -244,7 +294,7 @@ def delete_post(post_id):
 @admin_required
 def comments():
     page = request.args.get('page', 1, type=int)
-    comments = Comment.query.order_by(Comment.date_posted.desc()).paginate(page=page, per_page=20)
+    comments = Comment.query.order_by(Comment.created_at.desc()).paginate(page=page, per_page=20)
     return render_template('admin/comments.html', comments=comments)
 
 @admin.route('/comments/<int:comment_id>', methods=['DELETE'])
@@ -271,4 +321,59 @@ def settings():
         db.session.commit()
         flash('Settings updated successfully', 'success')
     
-    return render_template('admin/settings.html') 
+    return render_template('admin/settings.html')
+
+@admin.route('/dbcheck')
+@login_required
+@admin_required
+def check_db():
+    try:
+        # Get database URL (with password masked)
+        db_url = str(db.engine.url)
+        if 'postgresql://' in db_url:
+            # Mask the password in the URL
+            parts = db_url.split('@')
+            if len(parts) > 1:
+                credentials = parts[0].split(':')
+                if len(credentials) > 2:
+                    masked_url = f"{credentials[0]}:****@{parts[1]}"
+                else:
+                    masked_url = db_url
+            else:
+                masked_url = db_url
+        else:
+            masked_url = db_url
+
+        # Get all table names
+        inspector = inspect(db.engine)
+        tables = inspector.get_table_names()
+        
+        # Get counts and data
+        users = AdminUser.query.all()
+        posts = Post.query.all()
+        
+        return jsonify({
+            'status': 'success',
+            'database_url': masked_url,
+            'tables': tables,
+            'user_count': len(users),
+            'post_count': len(posts),
+            'users': [{
+                'id': user.id,
+                'username': user.username,
+                'created_at': user.created_at.isoformat() if user.created_at else None
+            } for user in users],
+            'posts': [{
+                'id': post.id,
+                'title': post.title,
+                'author_id': post.author_id,
+                'created_at': post.created_at.isoformat() if post.created_at else None,
+                'category': post.category,
+                'status': post.status
+            } for post in posts]
+        })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': str(e)
+        }), 500 

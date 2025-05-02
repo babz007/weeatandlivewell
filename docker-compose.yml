@@ -7,26 +7,34 @@ services:
       - .:/app
     environment:
       - FLASK_APP=app.py
-      - FLASK_ENV=development
+      - FLASK_ENV=production
       - PYTHONUNBUFFERED=1
-      - MYSQL_HOST=db
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=root
-      - MYSQL_DB=weeatandlivewell
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}
+    env_file:
+      - .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     restart: unless-stopped
 
   db:
-    image: mysql:8
+    image: postgres:14
     ports:
-      - "3306:3306"
+      - "5432:5432"
+    env_file:
+      - .env
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=weeatandlivewell
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     restart: unless-stopped
 
 volumes:
-  mysql_data: 
+  postgres_data: 

@@ -8,18 +8,18 @@ def init_routes(app):
     # Get all posts
     @app.route('/api/posts', methods=['GET'])
     def get_posts():
-        posts = Post.query.order_by(Post.date_posted.desc()).all()
+        posts = Post.query.order_by(Post.created_at.desc()).all()
         return jsonify([{
             'id': post.id,
             'title': post.title,
             'content': post.content,
-            'date_posted': post.date_posted.isoformat(),
+            'created_at': post.created_at.isoformat(),
             'images': [img.filename for img in post.images],
             'comments': [{
                 'id': comment.id,
-                'author': comment.author,
+                'author_name': comment.author_name,
                 'content': comment.content,
-                'date_posted': comment.date_posted.isoformat()
+                'created_at': comment.created_at.isoformat()
             } for comment in post.comments]
         } for post in posts])
 
@@ -31,7 +31,7 @@ def init_routes(app):
             post = Post(
                 title=data['title'],
                 content=data['content'],
-                date_posted=datetime.utcnow()
+                author_id=current_user.id
             )
             db.session.add(post)
             db.session.commit()
@@ -65,13 +65,13 @@ def init_routes(app):
             'id': post.id,
             'title': post.title,
             'content': post.content,
-            'date_posted': post.date_posted.isoformat(),
+            'created_at': post.created_at.isoformat(),
             'images': [img.filename for img in post.images],
             'comments': [{
                 'id': comment.id,
-                'author': comment.author,
+                'author_name': comment.author_name,
                 'content': comment.content,
-                'date_posted': comment.date_posted.isoformat()
+                'created_at': comment.created_at.isoformat()
             } for comment in post.comments]
         })
 
@@ -136,10 +136,9 @@ def init_routes(app):
         try:
             data = request.get_json()
             comment = Comment(
-                author=data['author'],
+                author_name=data['author'],
                 content=data['content'],
-                post_id=post_id,
-                date_posted=datetime.utcnow()
+                post_id=post_id
             )
             db.session.add(comment)
             db.session.commit()

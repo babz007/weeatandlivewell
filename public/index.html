@@ -560,11 +560,13 @@
 					</div>
 					<div class="col-lg-6  col-12">
 						<!-- Start Newsletter Form -->
-						<div class="subscribe-form ">
-							<form action="mail/mail.php" method="get" target="_blank" class="newsletter-inner">
-								<input name="EMAIL" placeholder="Your email address" class="common-input" onfocus="this.placeholder = ''"
-									onblur="this.placeholder = 'Your email address'" required="" type="email">
-								<button class="btn">Subscribe</button>
+						<div class="subscribe-form">
+							<form action="/api/newsletter/subscribe" method="POST" class="newsletter-inner">
+								<input name="email" placeholder="Your email address" class="common-input" 
+									onfocus="this.placeholder = ''"
+									onblur="this.placeholder = 'Your email address'" 
+									required type="email">
+								<button type="submit" class="btn">Subscribe</button>
 							</form>
 						</div>
 						<!-- End Newsletter Form -->
@@ -612,7 +614,7 @@
 		<!-- Magnific Popup JS -->
 		<script src="js/jquery.magnific-popup.min.js"></script>
 		<!-- Counter Up CDN JS -->
-		<script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
 		<!-- Bootstrap JS -->
 		<script src="js/bootstrap.min.js"></script>
 		<!-- Main JS -->
@@ -629,11 +631,11 @@
 				
 				// Sort posts by date and take the first 3
 				const latestPosts = posts
-					.sort((a, b) => new Date(b.date_posted) - new Date(a.date_posted))
+					.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
 					.slice(0, 3);
 				
 				latestPosts.forEach(post => {
-					const postDate = new Date(post.date_posted).toLocaleDateString('en-US', {
+					const postDate = new Date(post.created_at).toLocaleDateString('en-US', {
 						year: 'numeric',
 						month: 'short',
 						day: 'numeric'
@@ -643,7 +645,7 @@
 							<!-- Single Blog -->
 							<div class="single-news">
 								<div class="news-head">
-									<img src="${post.images && post.images.length > 0 ? `/static/uploads/${post.images[0].filename}` : 'img/blog1.jpg'}" alt="#">
+									<img src="${post.images && post.images.length > 0 ? `/uploads/${post.images[0].filename}` : 'img/blog1.jpg'}" alt="#">
 								</div>
 								<div class="news-body">
 									<div class="news-content">
