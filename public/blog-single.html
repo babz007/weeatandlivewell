@@ -416,7 +416,7 @@
 				const post = await response.json();
 
 				// Update page content
-				document.querySelector('.news-head img').src = post.image_url ? `/uploads/${post.image_url}` : 'img/blog1.jpg';
+				document.querySelector('.news-head img').src = post.images && post.images.length > 0 ? 'uploads/' + post.images[0] : 'img/blog1.jpg';
 				document.querySelector('.news-title').textContent = post.title;
 				document.querySelector('.news-text').innerHTML = post.content;
 				

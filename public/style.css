@@ -274,7 +274,7 @@ body{
 	font-weight:400;
 }
 .header .top-link li:hover a{
-	color:#1A76D1;
+	color:#8F9779;
 }
 .header .top-contact{
 	float:right;
@@ -345,7 +345,7 @@ body{
 	bottom: 0;
 	height: 3px;
 	width:0%;
-	background: #1A76D1;
+	background: #8F9779;
 	border-radius: 5px 5px 0 0;
 	opacity:0;
 	visibility:hidden;
@@ -706,7 +706,7 @@ body{
 	text-align: left;
 	z-index:3;
 	border-radius:5px;
-	background:#1A76D1;
+	background:#8F9779;
 	 -webkit-transition: all .3s ease-out 0s;
     -moz-transition: all .3s ease-out 0s;
     -ms-transition: all .3s ease-out 0s;
@@ -1030,7 +1030,7 @@ body{
 	margin-left: -35px;
 	margin-top: -35px;
 	font-size: 21px;
-	background: #1a76d1;
+	background: #8F9779;
 	padding-left: 4px;
 }
 .why-choose .choose-right .video:hover{
@@ -3267,7 +3267,7 @@ body{
 	bottom:0;
 	height:2px;
 	width:50px;
-	background:#1A76D1;
+	background:#8F9779;
 }
 .contact-us .contact-us-form p {
 	font-size: 14px;
@@ -3318,7 +3318,7 @@ body{
 	width:100%;
 }
 .contact-us .form .btn:hover{
-	background:#1A76D1;
+	background:#8F9779;
 	color:#fff;
 }
 .contact-us .contact-us-form .checkbox {
@@ -3348,7 +3348,7 @@ body{
 	top: 5px;
 	width: 15px;
 	height: 15px;
-	border: 1px solid #1A76D1;
+	border: 1px solid #8F9779;
 	border-radius: 100%;
 }
 .contact-us .contact-us-form .checkbox label::after {
@@ -3366,7 +3366,7 @@ body{
 	transition: all 0.4s ease;
 	display: block;
 	font-size: 9px;
-	background: #1A76D1;
+	background: #8F9779;
 	border-radius: 100%;
 }
 .contact-us .contact-us-form .checkbox label.checked::after{
@@ -3378,7 +3378,7 @@ body{
 	margin-top:50px;
 }
 .contact-us .single-info {
-	background: #1a76d1;
+	background: #8F9779;
 	padding: 40px 60px;
 	height: 150px;
 	border-radius: 10px;
@@ -3399,7 +3399,7 @@ body{
     margin: 0 auto;
     width: 80%;
     height: 90%;
-    background:#1A76D1;
+    background:#8F9779;
     opacity: 0;
     filter: blur(10px);
     -webkit-transition: all .3s ease-out 0s;
@@ -3493,7 +3493,7 @@ body{
 	height: 50px;
 	border-radius: 5px;
 	cursor: pointer;
-	background: #1A76D1;
+	background: #8F9779;
 	display: inline-block;
 	position: relative;
 	top: -2px;
@@ -3519,7 +3519,7 @@ body{
 .mail-seccess .success-inner h1 {
 	font-size: 100px;
 	text-shadow: 3px 5px 2px #3333;
-	color: #1A76D1;
+	color: #8F9779;
 	font-weight: 700;
 }
 .mail-seccess .success-inner h1 span {

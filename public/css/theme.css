@@ -1,11 +1,11 @@
 /* Theme Colors */
 :root {
-    --primary-color: #8F9779;  /* Sage green */
-    --secondary-color: #D2B48C;  /* Beige */
-    --accent-color: #6B8E23;  /* Olive green */
-    --text-color: #333;
-    --light-bg: #F5F5DC;  /* Light beige */
-    --dark-bg: #556B2F;  /* Dark olive green */
+    --primary-color: #4CAF50;  /* Green */
+    --secondary-color: #F5F5DC;  /* Beige */
+    --accent-color: #8BC34A;  /* Light Green */
+    --text-color: #333333;
+    --light-bg: #F5F5DC;
+    --dark-bg: #2E7D32;
 }
 
 /* Button Styles */
@@ -154,4 +154,48 @@
 .social-share li a:hover {
     background-color: var(--accent-color);
     transform: translateY(-3px);
+}
+
+/* Contact Form Styles */
+.contact-info .single-info {
+    background-color: var(--light-bg);
+    border: 1px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.contact-info .single-info:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.contact-info .single-info i {
+    color: var(--primary-color);
+}
+
+.contact-info .single-info:hover i {
+    color: white;
+}
+
+.contact-form .form-group input,
+.contact-form .form-group textarea {
+    border: 1px solid var(--primary-color);
+    background-color: var(--light-bg);
+}
+
+.contact-form .form-group input:focus,
+.contact-form .form-group textarea:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 5px rgba(139, 195, 74, 0.3);
+}
+
+.contact-form .btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.contact-form .btn:hover {
+    background-color: var(--dark-bg);
+    transform: translateY(-2px);
 } 
